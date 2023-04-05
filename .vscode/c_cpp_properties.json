@@ -98,6 +98,7 @@
                 "${workspaceRoot}/../../../libs/utf8/include",
                 "${workspaceRoot}/../../../libs/poco/include",
                 "${workspaceRoot}/../../../libs/kiss/include",
+                "${workspaceRoot}/../../../addons/ofxGui/src",
                 "/usr/include/pulse",
                 "/usr/include/cairo",
                 "/usr/include/gstreamer-1.0",
