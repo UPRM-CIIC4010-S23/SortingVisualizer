@@ -20,10 +20,10 @@ struct vmov
     int j;
 };
 
-class ContainersView
+class ContainersView : public std::vector<int>
 {
 private:
-    std::vector<size_t> elements;
+    using vector<int>::vector; // use the constructors from vector
     std::vector<ofColor> marks;
     std::vector<vmov> records;
     float boxsize;
@@ -38,6 +38,9 @@ public:
     void setElements(int n, int from, int to);
     void setBoxSize(int boxsize){ boxsize = boxsize; }
     void setBoxLogo(ofImage boxlogo) { boxlogo = boxlogo; }
+
+    int & operator[](int i) { return at(i); } // range-checked
+    const int & operator[](int i) const { return at(i); } // range-checked
 
     void next();
     void prev();

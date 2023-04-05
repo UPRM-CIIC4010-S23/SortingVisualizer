@@ -6,7 +6,7 @@ void ContainersView::setElements(int n, int from, int to)
     srand (time(NULL));
     for (int i = 0; i < n; i++)
     {
-        elements.push_back(rand() % (to-from) + from);
+        push_back(rand() % (to-from) + from);
         marks.push_back(ofColor(0.5, 0.0));
     }
     
@@ -14,9 +14,9 @@ void ContainersView::setElements(int n, int from, int to)
 
 void ContainersView::swap(int i, int j)
 {
-    int temp = elements[i];
-    elements[i] = elements[j];
-    elements[j] = temp; 
+    int temp = at(i);
+    at(i) = at(j);
+    at(j) = temp; 
     
     if (recording)
     {
@@ -117,12 +117,12 @@ void ContainersView::update()
 
 void ContainersView::draw()
 {
-    int max = *std::max_element(elements.begin(), elements.end());
-    for (size_t i = 0; i < elements.size(); i++)  
+    int max = *std::max_element(begin(), end());
+    for (size_t i = 0; i < size(); i++)  
     {
         ofPushMatrix();
-        ofTranslate(glm::vec3(boxsize*(i-(float)elements.size()/2), boxsize*max/float(-2.0), 0.0));
-        for (size_t j = 0; j < elements[i]; j++)
+        ofTranslate(glm::vec3(boxsize*(i-(float)size()/2), boxsize*max/float(-2.0), 0.0));
+        for (size_t j = 0; j < at(i); j++)
         {
             ofTranslate(glm::vec3(0.0, boxsize, 0.0));
             boxlogo.bind();
