@@ -10,6 +10,7 @@ typedef enum
 {
     SWAP,
     MARK,
+    UNMARK
 } MOVTYPE;
 
 struct vmov
@@ -22,11 +23,15 @@ struct vmov
 class ContainersView
 {
 private:
-    std::vector<int> elements;
+    std::vector<size_t> elements;
     std::vector<ofColor> marks;
     std::vector<vmov> records;
     float boxsize;
 	ofImage boxlogo; // the OF logo
+
+    bool playing;
+    bool recording;
+    size_t recordhead;
 public:
     ContainersView() {}
     ~ContainersView() {}
@@ -34,9 +39,14 @@ public:
     void setBoxSize(int boxsize){ boxsize = boxsize; }
     void setBoxLogo(ofImage boxlogo) { boxlogo = boxlogo; }
 
+    void play() { playing = true; recording = false;}
+    void ff();
+    void rw() { recordhead = 0; }
     void swap(int i, int j);
     void mark(int i);
+    void unmark(int i);
 
     void setup();
+    void update();
     void draw();
 };
