@@ -39,7 +39,7 @@ void ofApp::containerSizeChanged(int &containerSize){
 
 //--------------------------------------------------------------
 void ofApp::update(){
-	cview.update();	
+	cview.update();
 }
 
 //--------------------------------------------------------------
@@ -59,7 +59,15 @@ void ofApp::draw(){
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-
+	if(key == 'r'){
+		cview.rw();
+	}
+	else if(key == 'p'){
+		cview.play();
+	}
+	else if(key == ' '){
+		cview.pause();
+	}
 }
 
 //--------------------------------------------------------------

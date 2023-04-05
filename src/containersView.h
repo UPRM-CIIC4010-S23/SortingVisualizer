@@ -45,6 +45,7 @@ public:
     void next();
     void prev();
     void play() { playing = 1; recording = false;}
+    void pause() { playing = 0; recording = true;}
     void ff();
     void rw() { playing = -1; recording = false;}
     void swap(int i, int j);
