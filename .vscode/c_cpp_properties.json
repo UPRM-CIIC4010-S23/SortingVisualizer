@@ -102,7 +102,7 @@
                 "/usr/include/cairo",
                 "/usr/include/gstreamer-1.0",
                 "/usr/include/glib-2.0",
-                "${workspaceRoot}"
+                "${workspaceRoot}/**"
             ],
             "browse": {
                 "limitSymbolsToIncludedHeaders": true,
@@ -112,7 +112,8 @@
                     "/usr/local/include",
                     "${workspaceRoot}/../../../libs",
                     "${workspaceRoot}/../../../addons",
-                    "${workspaceRoot}/../../../libs/openFrameworks"
+                    "${workspaceRoot}/../../../libs/openFrameworks",
+                    "${workspaceRoot}/../../../libs/openFrameworks/graphics"
                 ]
             },
             "intelliSenseMode": "gcc-x64",
