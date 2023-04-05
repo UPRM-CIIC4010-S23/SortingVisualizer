@@ -62,6 +62,9 @@ void ofApp::keyPressed(int key){
 	if(key == 'r'){
 		cview.rw();
 	}
+	else if(key == 't'){
+		cview.rrw();
+	}
 	else if(key == 'p'){
 		cview.play();
 	}

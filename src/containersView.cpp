@@ -101,7 +101,14 @@ void ContainersView::prev()
         recordhead--;
     }
 }
-
+void ContainersView::rrw()
+{
+    while(recordhead > 0)
+    {
+        prev();
+    }
+    
+}
 void ContainersView::update()
 {
     if ((playing > 0) && (ofGetFrameNum() % 30 == 0))

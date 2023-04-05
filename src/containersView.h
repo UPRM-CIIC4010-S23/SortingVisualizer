@@ -48,6 +48,7 @@ public:
     void pause() { playing = 0; recording = true;}
     void ff();
     void rw() { playing = -1; recording = false;}
+    void rrw();
     void swap(int i, int j);
     void mark(int i);
     void unmark(int i);
