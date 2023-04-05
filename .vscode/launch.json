@@ -19,11 +19,13 @@
                         "ignoreFailures": true
                     }
                 ],
-                "program": "${workspaceRoot}/bin/${workspaceFolderBasename}_debug"
+                "program": "${workspaceRoot}/bin/${workspaceFolderBasename}_debug",
+                "preLaunchTask": "Build DEBUG"
             },
             "osx": {
                 "MIMode": "lldb",
-                "program": "${workspaceRoot}/bin/${workspaceFolderBasename}_debug.app/Contents/MacOS/${workspaceFolderBasename}_debug"
+                "program": "${workspaceRoot}/bin/${workspaceFolderBasename}_debug.app/Contents/MacOS/${workspaceFolderBasename}_debug",
+                "preLaunchTask": "Build DEBUG"
             },
             "windows": {
                 "MIMode": "gdb",
@@ -35,14 +37,15 @@
                         "ignoreFailures": true
                     }
                 ],
-                "program": "${workspaceRoot}/bin/${workspaceFolderBasename}_debug"
+                "program": "${workspaceRoot}/bin/${workspaceFolderBasename}_debug",
+                "preLaunchTask": "Build DEBUG"
             }
         },
         {
             "name": "C++ Attach",
             "type": "cppdbg",
             "request": "attach",
-            "program": "enter program name, for example ${workspaceRoot}/a.out",
+            "program": "${workspaceRoot}/bin/${workspaceFolderBasename}",
             "processId": "${command:pickProcess}",
             "linux": {
                 "MIMode": "gdb",
