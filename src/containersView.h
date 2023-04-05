@@ -29,7 +29,7 @@ private:
     float boxsize;
 	ofImage boxlogo; // the OF logo
 
-    bool playing;
+    int playing;
     bool recording;
     size_t recordhead;
 public:
@@ -39,9 +39,11 @@ public:
     void setBoxSize(int boxsize){ boxsize = boxsize; }
     void setBoxLogo(ofImage boxlogo) { boxlogo = boxlogo; }
 
-    void play() { playing = true; recording = false;}
+    void next();
+    void prev();
+    void play() { playing = 1; recording = false;}
     void ff();
-    void rw() { recordhead = 0; }
+    void rw() { playing = -1; recording = false;}
     void swap(int i, int j);
     void mark(int i);
     void unmark(int i);

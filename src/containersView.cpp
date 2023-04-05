@@ -21,26 +21,27 @@ void ContainersView::swap(int i, int j)
     if (recording)
     {
         records.push_back({MOVTYPE::SWAP, i, j});
-        records.push_back({MOVTYPE::UNMARK, i, i});
-        records.push_back({MOVTYPE::UNMARK, j, j});
+        recordhead++;
     }
 }
 
 void ContainersView::mark(int i)
 {
-    marks[i] = ofColor(0.5, 0.0);
+    marks[i] = ofColor(255, 0, 0, 128);
     if (recording)
     {
         records.push_back({MOVTYPE::MARK, i, i});
+        recordhead++;
     }
 }
 
 void ContainersView::unmark(int i)
 {
-    marks[i] = ofColor(255, 0, 0, 128);
+    marks[i] = ofColor(0.5, 0.0);
     if (recording)
     {
-        records.push_back({MOVTYPE::MARK, i, i});
+        records.push_back({MOVTYPE::UNMARK, i, i});
+        recordhead++;
     }
 }
 
@@ -51,29 +52,65 @@ void ContainersView::setup()
     boxsize = 50;
 
     recordhead = 0;
+    playing = 0;
     recording = true;
+}
+
+void ContainersView::next()
+{
+    if (records.size() > recordhead)
+    {
+        vmov vnow = records[recordhead];
+        switch (vnow.movtype)
+        {
+        case SWAP:
+            swap(vnow.i, vnow.j);
+            break;
+        case MARK:
+            mark(vnow.i);
+            break;
+        case UNMARK:
+            unmark(vnow.i);
+            break;
+        default:
+            break;
+        }
+        recordhead++;
+    }
+}
+
+void ContainersView::prev()
+{
+    if (recordhead > 0)
+    {
+        vmov vnow = records[recordhead-1];
+        switch (vnow.movtype)
+        {
+        case SWAP:
+            swap(vnow.i, vnow.j);
+            break;
+        case MARK:
+            mark(vnow.i);
+            break;
+        case UNMARK:
+            unmark(vnow.i);
+            break;
+        default:
+            break;
+        }
+        recordhead--;
+    }
 }
 
 void ContainersView::update()
 {
-    if (playing && (ofGetFrameNum() % 30 == 0))
+    if ((playing > 0) && (ofGetFrameNum() % 30 == 0))
     {
-        if (records.size() > recordhead)
-        {
-            vmov vnow = records[recordhead];
-            switch (vnow.movtype)
-            {
-            case SWAP:
-                swap(vnow.i, vnow.j);
-                break;
-            case MARK:
-                mark(vnow.i);
-                break;
-            default:
-                break;
-            }
-            recordhead++;
-        }
+        next();
+    }
+    if ((playing < 0) && (ofGetFrameNum() % 15 == 0))
+    {
+        prev();
     }
     
 }
