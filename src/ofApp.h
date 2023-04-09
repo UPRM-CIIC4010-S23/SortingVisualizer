@@ -26,6 +26,9 @@ class ofApp : public ofBaseApp{
 		void containerSizeChanged(int & containerSize);
 		void sorting();
 
+		void selectionSort(std::vector<int> &elements);
+		void insertionSort(std::vector<int> &elements);
+
 		bool bHide;
 		ofxIntSlider csize;
 		ofxButton csort;

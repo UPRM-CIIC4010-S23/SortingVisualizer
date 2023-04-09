@@ -125,5 +125,42 @@ void ofApp::dragEvent(ofDragInfo dragInfo){
 
 void ofApp::sorting()
 {
+	insertionSort(cview);
+}
 
+void ofApp::selectionSort(vector<int> &elements)
+{
+	for (int i = 0; i < elements.size(); i++)
+	{
+		int minPos = i;
+		for (int j = i+1; j < elements.size(); j++)
+		{
+			if(elements[j] < elements[minPos])
+			{
+				minPos = j;
+			}	
+		}
+		// Swap
+		cview.swap(i, minPos);
+		// int temp = elements[i];
+		// elements[i] = elements[minPos];
+		// elements[minPos] = temp;
+	}
+	
+}
+
+void ofApp::insertionSort(vector<int> &elements)
+{
+	for (int i = 1; i < elements.size(); i++)
+	{
+		int key = elements[i];
+		int j = i-1;
+		while( (j >= 0) && (elements[j] > key))
+		{
+			elements[j+1] = elements[j];
+			j--;
+		}
+		elements[j+1] = key;
+	}
+	
 }

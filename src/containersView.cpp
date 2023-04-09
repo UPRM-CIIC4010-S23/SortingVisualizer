@@ -16,7 +16,7 @@ void ContainersView::swap(int i, int j)
 {
     int temp = at(i);
     at(i) = at(j);
-    at(j) = temp; 
+    at(j) = temp;
     
     if (recording)
     {
@@ -115,7 +115,7 @@ void ContainersView::update()
     {
         next();
     }
-    if ((playing < 0) && (ofGetFrameNum() % 15 == 0))
+    if ((playing < 0))
     {
         prev();
     }
