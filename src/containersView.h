@@ -5,6 +5,7 @@
 #include <time.h>       /* time */
 #include <algorithm>
 #include "ofMain.h"
+#include "RackBox.h"
 
 typedef enum
 {
@@ -20,14 +21,11 @@ struct vmov
     int j;
 };
 
-class ContainersView : public std::vector<int>
+class ContainersView : public std::vector<RackBox>
 {
 private:
-    using vector<int>::vector; // use the constructors from vector
-    std::vector<ofColor> marks;
+    using vector<RackBox>::vector; // use the constructors from vector
     std::vector<vmov> records;
-    float boxsize;
-	ofImage boxlogo; // the OF logo
 
     int playing;
     bool recording;
@@ -37,10 +35,9 @@ public:
     ~ContainersView() {}
     void setElements(int n, int from, int to);
     void setBoxSize(int boxsize){ boxsize = boxsize; }
-    void setBoxLogo(ofImage boxlogo) { boxlogo = boxlogo; }
 
-    int & operator[](int i) { return at(i); } // range-checked
-    const int & operator[](int i) const { return at(i); } // range-checked
+    RackBox & operator[](int i) { return at(i); } // range-checked
+    const RackBox & operator[](int i) const { return at(i); } // range-checked
 
     void next();
     void prev();

@@ -3,6 +3,7 @@
 #include "ofMain.h"
 #include "ofxGui.h"
 #include "containersView.h"
+#include "RackBox.h"
 
 class ofApp : public ofBaseApp{
 
@@ -26,8 +27,8 @@ class ofApp : public ofBaseApp{
 		void containerSizeChanged(int & containerSize);
 		void sorting();
 
-		void selectionSort(std::vector<int> &elements);
-		void insertionSort(std::vector<int> &elements);
+		void selectionSort(std::vector<RackBox> &elements);
+		void insertionSort(std::vector<RackBox> &elements);
 
 		bool bHide;
 		ofxIntSlider csize;

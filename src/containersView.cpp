@@ -6,15 +6,14 @@ void ContainersView::setElements(int n, int from, int to)
     srand (time(NULL));
     for (int i = 0; i < n; i++)
     {
-        push_back(rand() % (to-from) + from);
-        marks.push_back(ofColor(0.5, 0.0));
+        push_back(RackBox(rand() % (to-from) + from));
     }
     
 }
 
 void ContainersView::swap(int i, int j)
 {
-    int temp = at(i);
+    RackBox temp = at(i);
     at(i) = at(j);
     at(j) = temp;
     
@@ -27,7 +26,7 @@ void ContainersView::swap(int i, int j)
 
 void ContainersView::mark(int i)
 {
-    marks[i] = ofColor(255, 0, 0, 128);
+    at(i).setColor(ofColor(255, 0, 0, 128));
     if (recording)
     {
         records.push_back({MOVTYPE::MARK, i, i});
@@ -37,7 +36,7 @@ void ContainersView::mark(int i)
 
 void ContainersView::unmark(int i)
 {
-    marks[i] = ofColor(0.5, 0.0);
+    at(i).setColor(ofColor(0.5, 0.0));
     if (recording)
     {
         records.push_back({MOVTYPE::UNMARK, i, i});
@@ -47,10 +46,6 @@ void ContainersView::unmark(int i)
 
 void ContainersView::setup()
 {
-    // loads the OF logo from disk
-	boxlogo.load("of.png");
-    boxsize = 50;
-
     recordhead = 0;
     playing = 0;
     recording = true;
@@ -124,24 +119,14 @@ void ContainersView::update()
 
 void ContainersView::draw()
 {
-    int max = *std::max_element(begin(), end());
+    RackBox max = *std::max_element(begin(), end(), [](RackBox a, RackBox b)
+                                  { return a.getHeight() < b.getHeight(); });
+    int boxsize = 50;
     for (size_t i = 0; i < size(); i++)  
     {
         ofPushMatrix();
-        ofTranslate(glm::vec3(boxsize*(i-(float)size()/2), boxsize*max/float(-2.0), 0.0));
-        for (size_t j = 0; j < at(i); j++)
-        {
-            ofTranslate(glm::vec3(0.0, boxsize, 0.0));
-            boxlogo.bind();
-            ofFill();
-            ofSetColor(255);
-            ofDrawBox(boxsize);
-            boxlogo.unbind();
-
-            ofNoFill();
-		    ofSetColor(marks[i]);
-            ofDrawBox(boxsize+0.1);
-        }
+        ofTranslate(glm::vec3(boxsize * (i - (float)size() / 2), boxsize * max.getHeight() / float(-2.0), 0.0));
+        at(i).draw();
         ofPopMatrix();
     }
 }

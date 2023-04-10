@@ -125,17 +125,17 @@ void ofApp::dragEvent(ofDragInfo dragInfo){
 
 void ofApp::sorting()
 {
-	insertionSort(cview);
+	selectionSort(cview);
 }
 
-void ofApp::selectionSort(vector<int> &elements)
+void ofApp::selectionSort(vector<RackBox> &elements)
 {
 	for (int i = 0; i < elements.size(); i++)
 	{
 		int minPos = i;
 		for (int j = i+1; j < elements.size(); j++)
 		{
-			if(elements[j] < elements[minPos])
+			if(elements[j].getHeight() < elements[minPos].getHeight())
 			{
 				minPos = j;
 			}	
@@ -149,13 +149,13 @@ void ofApp::selectionSort(vector<int> &elements)
 	
 }
 
-void ofApp::insertionSort(vector<int> &elements)
+void ofApp::insertionSort(vector<RackBox> &elements)
 {
 	for (int i = 1; i < elements.size(); i++)
 	{
-		int key = elements[i];
+		RackBox key = elements[i];
 		int j = i-1;
-		while( (j >= 0) && (elements[j] > key))
+		while( (j >= 0) && (elements[j].getHeight() > key.getHeight()))
 		{
 			elements[j+1] = elements[j];
 			j--;
