@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxGui.h"
+#include "ofxDatGui.h"
 #include "containersView.h"
 #include "RackBox.h"
 
@@ -24,16 +24,17 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 
-		void containerSizeChanged(int & containerSize);
+		void onButtonEvent(ofxDatGuiButtonEvent e);
+		void containerSizeChanged(ofxDatGuiSliderEvent e);
+
 		void sorting();
 
-		void selectionSort(std::vector<RackBox> &elements);
-		void insertionSort(std::vector<RackBox> &elements);
+		void selectionSort(ContainersView &elements);
+		void insertionSort(ContainersView &elements);
 
 		bool bHide;
-		ofxIntSlider csize;
-		ofxButton csort;
-		ofxPanel gui;
+		ofxDatGuiSlider* csize;
+		ofxDatGui* gui;
 
 		ofLight light; // creates a light and enables lighting
 		ofEasyCam cam; // add mouse controls for camera movement

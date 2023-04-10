@@ -3,24 +3,18 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
 	ofSetVerticalSync(true);
+
+	gui = new ofxDatGui(ofxDatGuiAnchor::TOP_RIGHT);
+	gui->setTheme(new ofxDatGuiThemeMidnight());
+
+	gui->addButton("Generic Sort");
+	gui->addButton("Selection Sort");
+	gui->addButton("Insertion Sort");
+	csize = gui->addSlider("Container size", 2, 25, 10);
 	// we add this listener before setting up so the initial container size is correct
-	csize.addListener(this, &ofApp::containerSizeChanged);
-	csort.addListener(this, &ofApp::sorting);
-
-	gui.setup(); // most of the time you don't need a name
-
-	ofTrueTypeFontSettings settings(OF_TTF_MONO, 14);
-	gui.loadFont(settings);
-	gui.setSize(600, 100);
-
-	gui.add(csize.setup("Container size", 5, 2, 25));
-	gui.add(csort.setup("Sorting"));
-
-	bHide = false;
-
-	// this uses depth information for occlusion
-	// rather than always drawing things on top of each other
-	// ofEnableDepthTest();
+	gui->onButtonEvent(this, &ofApp::onButtonEvent);
+	csize->onSliderEvent(this, &ofApp::containerSizeChanged);
+	cview.setElements(csize->getValue(), 1, 15);
 
 	// ofBox uses texture coordinates from 0-1, so you can load whatever
 	// sized images you want and still use them to texture your box
@@ -31,30 +25,28 @@ void ofApp::setup(){
 	ofSetLineWidth(10);
 }
 
-//--------------------------------------------------------------
-void ofApp::containerSizeChanged(int &containerSize){
-	cview.clear();
-	cview.setElements(containerSize, 1, 15);
-}
+# pragma region gui
 
-//--------------------------------------------------------------
-void ofApp::update(){
-	cview.update();
-}
-
-//--------------------------------------------------------------
-void ofApp::draw(){
-	ofBackgroundGradient(ofColor::white, ofColor::gray);
-	ofEnableDepthTest();
-    cam.begin();
-	cview.draw();
-    cam.end();
-	ofDisableDepthTest();
-	// auto draw?
-	// should the gui control hiding?
-	if(!bHide){
-		gui.draw();
+void ofApp::onButtonEvent(ofxDatGuiButtonEvent e)
+{
+	if (e.target->getLabel() == "Generic Sort")
+	{
+		sorting();
 	}
+	if (e.target->getLabel() == "Selection Sort")
+	{
+		selectionSort(cview);
+	}
+	if (e.target->getLabel() == "Insertion Sort")
+	{
+		selectionSort(cview);
+	}
+}
+
+//--------------------------------------------------------------
+void ofApp::containerSizeChanged(ofxDatGuiSliderEvent e){
+	cview.clear();
+	cview.setElements(e.value, 1, 15);
 }
 
 //--------------------------------------------------------------
@@ -122,13 +114,31 @@ void ofApp::gotMessage(ofMessage msg){
 void ofApp::dragEvent(ofDragInfo dragInfo){ 
 
 }
+# pragma endregion gui
+
+# pragma region tick
+//--------------------------------------------------------------
+void ofApp::update(){
+	cview.update();
+}
+
+//--------------------------------------------------------------
+void ofApp::draw(){
+	ofBackgroundGradient(ofColor::white, ofColor::gray);
+	ofEnableDepthTest();
+    cam.begin();
+	cview.draw();
+    cam.end();
+	ofDisableDepthTest();
+}
+# pragma endregion tick
 
 void ofApp::sorting()
 {
 	selectionSort(cview);
 }
 
-void ofApp::selectionSort(vector<RackBox> &elements)
+void ofApp::selectionSort(ContainersView &elements)
 {
 	for (int i = 0; i < elements.size(); i++)
 	{
@@ -141,15 +151,12 @@ void ofApp::selectionSort(vector<RackBox> &elements)
 			}	
 		}
 		// Swap
-		cview.swap(i, minPos);
-		// int temp = elements[i];
-		// elements[i] = elements[minPos];
-		// elements[minPos] = temp;
+		elements.swap(i, minPos);
 	}
 	
 }
 
-void ofApp::insertionSort(vector<RackBox> &elements)
+void ofApp::insertionSort(ContainersView &elements)
 {
 	for (int i = 1; i < elements.size(); i++)
 	{
@@ -157,7 +164,8 @@ void ofApp::insertionSort(vector<RackBox> &elements)
 		int j = i-1;
 		while( (j >= 0) && (elements[j].getHeight() > key.getHeight()))
 		{
-			elements[j+1] = elements[j];
+			// swap
+			elements.swap(j+1, j);
 			j--;
 		}
 		elements[j+1] = key;
