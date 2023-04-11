@@ -31,6 +31,11 @@ class ofApp : public ofBaseApp{
 
 		void selectionSort(ContainersView &elements);
 		void insertionSort(ContainersView &elements);
+		void merge(ContainersView left, ContainersView right, ContainersView &elements);
+		void mergeSort(ContainersView &elements);
+		int partition(ContainersView &elements, int low, int high);
+		void quickSortHelper(ContainersView &elements, int low, int high);
+		void quickSort(ContainersView &elements);
 
 		bool bHide;
 		ofxDatGuiSlider* csize;

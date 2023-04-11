@@ -10,6 +10,7 @@ void ofApp::setup(){
 	gui->addButton("Generic Sort");
 	gui->addButton("Selection Sort");
 	gui->addButton("Insertion Sort");
+	gui->addButton("Quick Sort");
 	csize = gui->addSlider("Container size", 2, 25, 10);
 	// we add this listener before setting up so the initial container size is correct
 	gui->onButtonEvent(this, &ofApp::onButtonEvent);
@@ -40,6 +41,10 @@ void ofApp::onButtonEvent(ofxDatGuiButtonEvent e)
 	if (e.target->getLabel() == "Insertion Sort")
 	{
 		selectionSort(cview);
+	}
+	if (e.target->getLabel() == "Quick Sort")
+	{
+		quickSort(cview);
 	}
 }
 
@@ -135,7 +140,7 @@ void ofApp::draw(){
 
 void ofApp::sorting()
 {
-	selectionSort(cview);
+	quickSort(cview);
 }
 
 void ofApp::selectionSort(ContainersView &elements)
@@ -171,4 +176,93 @@ void ofApp::insertionSort(ContainersView &elements)
 		elements[j+1] = key;
 	}
 	
+}
+
+void ofApp::merge(ContainersView left, ContainersView right, ContainersView &elements)
+{
+	int leftIndex = 0;
+	int rightIndex = 0;
+	int resultIndex = 0;
+
+	while((leftIndex < left.size()) && (rightIndex < right.size()))
+	{
+		if (left[leftIndex].getHeight() < right[rightIndex].getHeight())
+		{
+			elements[resultIndex] = left[leftIndex];
+			leftIndex++;
+			resultIndex++;
+		}
+		else
+		{
+			elements[resultIndex] = right[rightIndex];
+			rightIndex++;
+			resultIndex++;
+		}
+	}
+	while (leftIndex < left.size())
+	{
+		elements[resultIndex] = left[leftIndex];
+		leftIndex++;
+		resultIndex++;
+	}
+	while (rightIndex < right.size())
+	{
+		elements[resultIndex] = right[rightIndex];
+		rightIndex++;
+		resultIndex++;
+	}
+}
+
+void ofApp::mergeSort(ContainersView &elements)
+{
+	if (elements.size() <= 1)
+	{
+		return;
+	}
+	int midPos = elements.size()/2;
+	ContainersView leftHalf;
+	for (size_t i = 0; i < midPos; i++)
+	{
+		leftHalf.push_back(elements[i]);
+	}
+	ContainersView rightHalf;
+	for (size_t i = midPos; i < elements.size(); i++)
+	{
+		rightHalf.push_back(elements[i]);
+	}
+	mergeSort(leftHalf);
+	mergeSort(rightHalf);
+	merge(leftHalf, rightHalf, elements);
+}
+
+int ofApp::partition(ContainersView &elements, int low, int high)
+{
+	RackBox pivot = elements[high];
+	int i = low-1;
+	for (size_t j = low; j < high; j++)
+	{
+		if (elements[j].getHeight() < pivot.getHeight())
+		{
+			i++;
+			elements.swap(i, j);
+		}	
+	}
+	elements.swap(i+1, high);
+	return i+1;
+}
+
+void ofApp::quickSortHelper(ContainersView &elements, int low, int high)
+{
+	if (low < high)
+	{
+		int pi = partition(elements, low, high);
+		quickSortHelper(elements, low, pi-1);
+		quickSortHelper(elements, pi+1, high);
+	}
+	return;
+}
+
+void ofApp::quickSort(ContainersView &elements)
+{
+	quickSortHelper(elements, 0, elements.size()-1);
 }
